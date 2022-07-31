@@ -2,12 +2,10 @@
 
 
 #define Hall_Sensor A0
-#define motor1pin1 8
-#define motor1pin2 9
-#define motor2pin1 7
-#define motor2pin2 6
-#define PWM1 10
-#define PWM2 11
+#define motor1pin1 5
+#define motor1pin2 6
+#define motor2pin1 9
+#define motor2pin2 10
 
 const bool USE_MPH = true; 
 const int WHEEL_DIAMETER = 18; 
@@ -63,36 +61,34 @@ void setup() {
   pinMode(motor1pin2,OUTPUT);
   pinMode(motor2pin1,OUTPUT);
   pinMode(motor2pin2,OUTPUT);
-  pinMode(PWM1,OUTPUT);
-  pinMode(PWM2,OUTPUT);
   Serial.begin(115200);
-  analogWrite(PWM1,255);
-  analogWrite(PWM2,255);
-
-  digitalWrite(motor1pin1,LOW);
-    digitalWrite(motor1pin2,LOW);
-    digitalWrite(motor2pin1,LOW);
-    digitalWrite(motor2pin2,LOW);
-  
+  digitalWrite(motor1pin1,!LOW);
+  digitalWrite(motor1pin2,!LOW);
+  digitalWrite(motor2pin1,!LOW);
+  digitalWrite(motor2pin2,!LOW);
 }
 void loop() {
+  
   // put your main code here, to run repeatedly:
   long kph1 = read_speed();
   Serial.println(kph1);
-  if(kph1<2){
-    digitalWrite(motor1pin1,HIGH);
-    digitalWrite(motor1pin2,LOW);
-    digitalWrite(motor2pin1,HIGH);
-    digitalWrite(motor2pin2,LOW);
-    
-    
+  if(kph1==0){
+    digitalWrite(motor1pin1,!LOW);
+  digitalWrite(motor1pin2,!LOW);
+  digitalWrite(motor2pin1,!LOW);
+  digitalWrite(motor2pin2,!LOW);
   }
-  if(kph1>=3){
-    
-    digitalWrite(motor1pin1,LOW);
-    digitalWrite(motor1pin2,HIGH);
-    digitalWrite(motor2pin1,LOW);
-    digitalWrite(motor2pin2,HIGH);
+  if(kph1<3 && kph1>=1){
+     digitalWrite(motor1pin1,!HIGH);
+     digitalWrite(motor1pin2,!LOW);
+     digitalWrite(motor2pin1,!HIGH);
+     digitalWrite(motor2pin2,!LOW);
   }
-  //delay(10);
+  if(kph1>=3 && kph1 <5){
+    digitalWrite(motor1pin1,!LOW);
+     digitalWrite(motor1pin2,!HIGH);
+     digitalWrite(motor2pin1,!LOW);
+     digitalWrite(motor2pin2,!HIGH);
+  }
+  //delay(100);
 }
